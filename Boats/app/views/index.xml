@@ -1,43 +1,47 @@
 <Alloy>
-	<TabGroup id='tabgroup'>
-		<Tab title="New Boat" id="tab1" icon="KS_nav_ui.png">
-			<Window title="Enter your new boats!" id="addboat">
-					<TextField id="boatName" hintText="Boat Name" ></TextField>
-					<TextField id="loa" hintText="LOA" ></TextField>
-					<TextField id="lwl" hintText="LWL" ></TextField>
-					<TextField id="beam" hintText="Beam" ></TextField>
-					<TextField id="displacement" hintText="Displacement" ></TextField>
-					<TextField id="sailArea" hintText="Sail Area" ></TextField>
-				<View>
-					<Button title="Save" id="save">Save</Button>
-					<Button title="Edit" id="edit">Edit</Button>
-					<Button id="deleteBT">Delete</Button>
-					<Button title="Exit" id="exit">Exit</Button>
-				</View>
-			</Window>
-		</Tab>
-		<Tab title="View Saved Boats" id="tab2" icon="brownboat.png">
-			<Window title="Here is a list of your saved boats!" id="dbwindow">
-				<ScrollView id="tab2scroll" ></ScrollView>
-				<View>
-					<Button id="back1">Back</Button>
-				</View>
-			</Window>
-		</Tab>
-		<Tab title="View Selected Boat" id="tab3" icon="KS_nav_ui.png">
-			<Window title="Currently Selected Boat Stats!" id="savedboats">
-				<ScrollView id="tab3scroll">
-					<Label id="selectedBoat" text="You must select a boat!"/>
-					<Label id="maxHullSpeed" text="Max Hull Speed"/>
-					<Label id="dL" text="D/L"/>
-					<Label id="sAD" text="SA/D"/>
-					<Label id="capI" text="Capsize Index"/>
-					<Label id="comfI" text="Comfort Index"/>
-				</ScrollView>
-				<View>
-					<Button id="back2">Back</Button>
-				</View>
-			</Window>
-		</Tab>
-	</TabGroup>
+    <TabGroup id='tabgroup'>
+        <Tab title="Add a new Boat" id="tab1" icon="KS_nav_ui.png">
+            <Window title="Enter your new boats!" id="addboat">
+                <ScrollView id="tab1scroll">
+                    <TextField id="boatName" hintText="Boat Name" ></TextField>
+                    <TextField id="loa" hintText="LOA" ></TextField>
+                    <TextField id="lwl" hintText="LWL" ></TextField>
+                    <TextField id="beam" hintText="Beam" ></TextField>
+                    <TextField id="displacement" hintText="Displacement" ></TextField>
+                    <TextField id="sailArea" hintText="Sail Area" ></TextField>
+                </ScrollView>
+                <View>
+                    <Button id="save">Save New Boat</Button>
+                    <Button id="cancel">Cancel</Button>
+                    <!-- <Button id="edit">Edit</Button> -->
+                    <!-- <Button id="deleteBT">Delete</Button> -->
+                </View>
+            </Window>
+        </Tab>
+        <Tab title="View Saved Boats" id="tab2" icon="brownboat.png">
+            <Window title="Here is a list of your saved boats!" id="dbwindow">
+                <TableView id="boatTable"></TableView>
+                <View>
+                    <Button id="add">Add a New Boat</Button>
+                    <Button id="exit">Exit</Button>
+                </View>
+            </Window>
+        </Tab>
+        <Tab title="View Selected Boat" id="tab3" icon="KS_nav_ui.png">
+            <Window title="Currently Selected Boat Stats!" id="savedboats">
+                <ScrollView id="tab3scroll">
+                    <Label id="selectedBoat" text="You must select a boat!"/>
+                    <Label id="maxHullSpeed" text="Max Hull Speed"/>
+                    <Label id="dL" text="D/L"/>
+                    <Label id="sAD" text="SA/D"/>
+                    <Label id="capI" text="Capsize Index"/>
+                    <Label id="comfI" text="Comfort Index"/>
+                </ScrollView>
+                <View>
+                    <Button id="home">Back other boats.</Button>
+                    <!-- <Button id="editboat">Edit this boat.</Button> -->
+                </View>
+            </Window>
+        </Tab>
+    </TabGroup>
 </Alloy>

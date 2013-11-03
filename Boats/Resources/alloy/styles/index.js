@@ -4,11 +4,27 @@ module.exports = [ {
     key: "Window",
     style: {
         backgroundColor: "#fff",
-        bubbleParent: true
+        bubbleParent: true,
+        tabBarHidden: true
     }
 }, {
     isApi: true,
     priority: 1000.0003,
+    key: "TabGroup",
+    style: {
+        tabHeight: 0,
+        navBarHidden: true
+    }
+}, {
+    isApi: true,
+    priority: 1000.0004,
+    key: "TableView",
+    style: {
+        rowHeight: "100px"
+    }
+}, {
+    isApi: true,
+    priority: 1000.0005,
     key: "Label",
     style: {
         width: "100%",
@@ -24,29 +40,30 @@ module.exports = [ {
     }
 }, {
     isApi: true,
-    priority: 1000.0004,
+    priority: 1000.0006,
     key: "Button",
     style: {
         bubbleParent: true,
-        width: "25%",
+        width: "33%",
         height: "100%"
     }
 }, {
     isApi: true,
-    priority: 1000.0005,
+    priority: 1000.0007,
     key: "ScrollView",
     style: {
+        top: 0,
         bubbleParent: true,
         showVerticalScrollIndicator: true,
         showHorizontalScrollIndicator: false,
         scrollType: "vertical",
-        height: "100%",
+        height: "87%",
         width: "100%",
         layout: "vertical"
     }
 }, {
     isApi: true,
-    priority: 1000.0006,
+    priority: 1000.0008,
     key: "TextField",
     style: {
         clearOnEdit: true,
@@ -63,7 +80,7 @@ module.exports = [ {
     }
 }, {
     isApi: true,
-    priority: 1000.0007,
+    priority: 1000.0009,
     key: "View",
     style: {
         layout: "horizontal",
@@ -74,9 +91,24 @@ module.exports = [ {
     }
 }, {
     isId: true,
-    priority: 100000.0008,
+    priority: 100000.001,
     key: "boatName",
     style: {
         clearOnEdit: false
+    }
+}, {
+    isId: true,
+    priority: 100000.0011,
+    key: "add",
+    style: {
+        image: "Button-Add-icon.png"
+    }
+}, {
+    isId: true,
+    priority: 100000.0012,
+    key: "boatTable",
+    style: {
+        minRowHeight: "50px",
+        maxRowHeight: "10%"
     }
 } ];

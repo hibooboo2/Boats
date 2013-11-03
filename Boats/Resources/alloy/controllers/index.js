@@ -1,32 +1,35 @@
 function Controller() {
     function saveBoatbutton(boatproperties) {
         boatproperties.reverse();
-        var aButton = Ti.UI.createLabel({
-            window: $.tab2scroll,
+        var row = Ti.UI.createTableViewRow({
+            height: "100px"
+        });
+        var image = Ti.UI.createImageView({
+            url: "KS_nav_ui.png"
+        });
+        var boatLabel = Ti.UI.createLabel({
             text: boatproperties.pop(),
-            height: "13%",
-            width: "100%",
-            font: {
-                fontSize: "50%",
-                fontFamily: "Helvetica Neue"
-            },
             loa: boatproperties.pop(),
             lwl: boatproperties.pop(),
             beam: boatproperties.pop(),
             displacement: boatproperties.pop(),
-            sailArea: boatproperties.pop()
+            sailArea: boatproperties.pop(),
+            left: 10,
+            height: "100%"
         });
-        aButton.addEventListener("click", function() {
-            calcBoat(aButton.text, aButton.loa, aButton.lwl, aButton.beam, aButton.displacement, aButton.sailArea);
-            textFields[0].value = aButton.text;
-            textFields[1].value = aButton.loa;
-            textFields[2].value = aButton.lwl;
-            textFields[3].value = aButton.beam;
-            textFields[4].value = aButton.displacement;
-            textFields[5].value = aButton.sailArea;
+        row.add(boatLabel);
+        row.add(image);
+        $.boatTable.appendRow(row);
+        boatLabel.addEventListener("click", function() {
+            calcBoat(boatLabel.text, boatLabel.loa, boatLabel.lwl, boatLabel.beam, boatLabel.displacement, boatLabel.sailArea);
+            textFields[0].value = boatLabel.text;
+            textFields[1].value = boatLabel.loa;
+            textFields[2].value = boatLabel.lwl;
+            textFields[3].value = boatLabel.beam;
+            textFields[4].value = boatLabel.displacement;
+            textFields[5].value = boatLabel.sailArea;
             $.tabgroup.setActiveTab(2);
         });
-        $.tab2scroll.add(aButton);
     }
     function calcBoat(boatName, loa, lwl, beam, displacement, sailArea) {
         $.selectedBoat.text = boatName + " is currently selected!";
@@ -71,51 +74,27 @@ function Controller() {
             boatsdb.close();
         }
     }
-    function updateBoatInDB(values) {
-        if (0 != "android".toString().toLowerCase().localeCompare("mobileweb")) {
-            var boatsdb = Ti.Database.open("boatsDB");
-            boatsdb.execute("UPDATE theBoats SET boatName=?,loa=?,lwl=?,beam=?,displacement=?,sailArea=? WHERE boatName=? ", values[0], values[1], values[2], values[3], values[4], values[5], values[0]);
-            boatsdb.close();
-            alert(values[0] + " has been updated.");
-        }
-    }
-    function deleteBoatInDB(boatName) {
-        if (0 != "android".toString().toLowerCase().localeCompare("mobileweb")) {
-            var boatsdb = Ti.Database.open("boatsDB");
-            boatsdb.execute("DELETE FROM theBoats WHERE boatName=?", boatName);
-            boatsdb.close();
-            updateBoatViewer();
-            alert(boatName + " deleted!");
-        }
-    }
-    function updateBoatViewer() {
-        $.tab2scroll.removeAllChildren();
-        makeBoatButtonsFromDB();
-    }
     function validateData() {
         function validateField(element, index) {
             if (0 == element.value.localeCompare("")) {
                 valid = false;
                 element.setValue("");
-                alert("Please enter something in the " + element.hintText + " box.");
+                alertText += "Please enter something in the " + element.hintText + " box.\n";
             } else if (0 != index) if (isNaN(element.value)) {
                 valid = false;
                 element.setValue("");
-                alert("Please enter a number in the" + element.hintText + " box.");
+                alertText += "Please enter a number in the" + element.hintText + " box.\n";
             } else if (0 == parseFloat(element.value)) {
                 valid = false;
                 element.setValue("");
-                alert("The" + element.hintText + "cannot be 0.");
+                alertText += "The" + element.hintText + "cannot be 0.\n";
             }
         }
         var valid = true;
+        var alertText = "";
         textFields.forEach(validateField);
+        valid || alert(alertText);
         return valid;
-    }
-    function back(element, index) {
-        element.addEventListener("click", function() {
-            $.tabgroup.setActiveTab(index);
-        });
     }
     function swiped(element, index) {
         element.addEventListener("swipe", function(e) {
@@ -130,20 +109,24 @@ function Controller() {
     var $ = this;
     var exports = {};
     $.__views.tabgroup = Ti.UI.createTabGroup({
+        tabHeight: 0,
+        navBarHidden: true,
         id: "tabgroup"
     });
     $.__views.addboat = Ti.UI.createWindow({
         backgroundColor: "#fff",
         bubbleParent: true,
+        tabBarHidden: true,
         title: "Enter your new boats!",
         id: "addboat"
     });
     $.__views.tab1scroll = Ti.UI.createScrollView({
+        top: 0,
         bubbleParent: true,
         showVerticalScrollIndicator: true,
         showHorizontalScrollIndicator: false,
         scrollType: "vertical",
-        height: "100%",
+        height: "87%",
         width: "100%",
         layout: "vertical",
         id: "tab1scroll"
@@ -256,39 +239,23 @@ function Controller() {
     $.__views.addboat.add($.__views.__alloyId0);
     $.__views.save = Ti.UI.createButton({
         bubbleParent: true,
-        width: "25%",
+        width: "33%",
         height: "100%",
-        title: "Save",
+        title: "Save New Boat",
         id: "save"
     });
     $.__views.__alloyId0.add($.__views.save);
-    $.__views.edit = Ti.UI.createButton({
+    $.__views.cancel = Ti.UI.createButton({
         bubbleParent: true,
-        width: "25%",
+        width: "33%",
         height: "100%",
-        title: "Edit",
-        id: "edit"
+        title: "Cancel",
+        id: "cancel"
     });
-    $.__views.__alloyId0.add($.__views.edit);
-    $.__views.deleteBT = Ti.UI.createButton({
-        bubbleParent: true,
-        width: "25%",
-        height: "100%",
-        title: "Delete",
-        id: "deleteBT"
-    });
-    $.__views.__alloyId0.add($.__views.deleteBT);
-    $.__views.exit = Ti.UI.createButton({
-        bubbleParent: true,
-        width: "25%",
-        height: "100%",
-        title: "Exit",
-        id: "exit"
-    });
-    $.__views.__alloyId0.add($.__views.exit);
+    $.__views.__alloyId0.add($.__views.cancel);
     $.__views.tab1 = Ti.UI.createTab({
         window: $.__views.addboat,
-        title: "New Boat",
+        title: "Add a new Boat",
         id: "tab1",
         icon: "KS_nav_ui.png"
     });
@@ -296,20 +263,17 @@ function Controller() {
     $.__views.dbwindow = Ti.UI.createWindow({
         backgroundColor: "#fff",
         bubbleParent: true,
+        tabBarHidden: true,
         title: "Here is a list of your saved boats!",
         id: "dbwindow"
     });
-    $.__views.tab2scroll = Ti.UI.createScrollView({
-        bubbleParent: true,
-        showVerticalScrollIndicator: true,
-        showHorizontalScrollIndicator: false,
-        scrollType: "vertical",
-        height: "100%",
-        width: "100%",
-        layout: "vertical",
-        id: "tab2scroll"
+    $.__views.boatTable = Ti.UI.createTableView({
+        rowHeight: "100px",
+        minRowHeight: "50px",
+        maxRowHeight: "10%",
+        id: "boatTable"
     });
-    $.__views.dbwindow.add($.__views.tab2scroll);
+    $.__views.dbwindow.add($.__views.boatTable);
     $.__views.__alloyId1 = Ti.UI.createView({
         layout: "horizontal",
         width: "100%",
@@ -319,14 +283,23 @@ function Controller() {
         id: "__alloyId1"
     });
     $.__views.dbwindow.add($.__views.__alloyId1);
-    $.__views.back1 = Ti.UI.createButton({
+    $.__views.add = Ti.UI.createButton({
         bubbleParent: true,
-        width: "25%",
+        width: "33%",
         height: "100%",
-        title: "Back",
-        id: "back1"
+        image: "Button-Add-icon.png",
+        title: "Add a New Boat",
+        id: "add"
     });
-    $.__views.__alloyId1.add($.__views.back1);
+    $.__views.__alloyId1.add($.__views.add);
+    $.__views.exit = Ti.UI.createButton({
+        bubbleParent: true,
+        width: "33%",
+        height: "100%",
+        title: "Exit",
+        id: "exit"
+    });
+    $.__views.__alloyId1.add($.__views.exit);
     $.__views.tab2 = Ti.UI.createTab({
         window: $.__views.dbwindow,
         title: "View Saved Boats",
@@ -337,15 +310,17 @@ function Controller() {
     $.__views.savedboats = Ti.UI.createWindow({
         backgroundColor: "#fff",
         bubbleParent: true,
+        tabBarHidden: true,
         title: "Currently Selected Boat Stats!",
         id: "savedboats"
     });
     $.__views.tab3scroll = Ti.UI.createScrollView({
+        top: 0,
         bubbleParent: true,
         showVerticalScrollIndicator: true,
         showHorizontalScrollIndicator: false,
         scrollType: "vertical",
-        height: "100%",
+        height: "87%",
         width: "100%",
         layout: "vertical",
         id: "tab3scroll"
@@ -450,14 +425,14 @@ function Controller() {
         id: "__alloyId2"
     });
     $.__views.savedboats.add($.__views.__alloyId2);
-    $.__views.back2 = Ti.UI.createButton({
+    $.__views.home = Ti.UI.createButton({
         bubbleParent: true,
-        width: "25%",
+        width: "33%",
         height: "100%",
-        title: "Back",
-        id: "back2"
+        title: "Back other boats.",
+        id: "home"
     });
-    $.__views.__alloyId2.add($.__views.back2);
+    $.__views.__alloyId2.add($.__views.home);
     $.__views.tab3 = Ti.UI.createTab({
         window: $.__views.savedboats,
         title: "View Selected Boat",
@@ -471,9 +446,7 @@ function Controller() {
     $.tabgroup.open();
     var textFields = [ $.boatName, $.loa, $.lwl, $.beam, $.displacement, $.sailArea ];
     var windows = [ $.addboat, $.dbwindow, $.savedboats ];
-    var backbuttons = [ $.back1, $.back2 ];
     makeBoatButtonsFromDB();
-    backbuttons.forEach(back);
     windows.forEach(swiped);
     $.save.addEventListener("click", function() {
         function getvalues(element) {
@@ -487,23 +460,20 @@ function Controller() {
             $.tabgroup.setActiveTab(1);
         }
     });
-    $.edit.addEventListener("click", function() {
-        function getvalues(element) {
-            textValues.push(element.value);
-        }
-        if (validateData()) {
-            var textValues = [];
-            textFields.forEach(getvalues);
-            updateBoatInDB(textValues);
-            $.tabgroup.setActiveTab(1);
-        }
-    });
-    $.deleteBT.addEventListener("click", function() {
-        deleteBoatInDB($.boatName.value);
+    $.cancel.addEventListener("click", function() {
         $.tabgroup.setActiveTab(1);
     });
+    $.add.addEventListener("click", function() {
+        textFields.forEach(function(element) {
+            element.value = "";
+        });
+        $.tabgroup.setActiveTab(0);
+    });
     $.exit.addEventListener("click", function() {
-        0 == "android".toString().toLowerCase().localeCompare("android") ? Ti.Android.currentActivity.finish() : 0 == "android".toString().toLowerCase().localeCompare("mobileweb") && alert("You Hit Exit");
+        0 == "android".toString().toLowerCase().localeCompare("android") ? Ti.Android.currentActivity.finish() : alert("You Hit Exit");
+    });
+    $.home.addEventListener("click", function() {
+        $.tabgroup.setActiveTab(1);
     });
     _.extend($, exports);
 }

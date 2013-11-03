@@ -1,6 +1,14 @@
 "Window" : {
 	backgroundColor: "#fff",
-	bubbleParent : true
+	bubbleParent : true,
+	tabBarHidden : true
+},
+"TabGroup" : {
+	tabHeight : 0,
+	navBarHidden : true
+},
+"TableView" : {
+	rowHeight : "100px"
 },
 "Label" : {
 	width: "100%",
@@ -16,15 +24,16 @@
 }, 
 "Button" : {
 	bubbleParent : true,
-	width: "25%",
+	width: "33%",
 	height: "100%"
 },
 "ScrollView" : {
+	top : 0 ,
 	bubbleParent : true,
 	showVerticalScrollIndicator : true,
 	showHorizontalScrollIndicator : false,
 	scrollType :"vertical",
-	height : "100%",
+	height : "87%",
 	width : "100%",
 	layout : "vertical"
 }
@@ -51,3 +60,11 @@
 "#boatName" : {
 	clearOnEdit : false
 }
+"#add" : {
+	image : "Button-Add-icon.png"
+}
+"#boatTable" : {
+	minRowHeight : "50px",
+	maxRowHeight : "10%"
+}
+
