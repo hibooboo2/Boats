@@ -7,6 +7,12 @@ function Controller() {
         var image = Ti.UI.createImageView({
             url: "KS_nav_ui.png"
         });
+        var viewBT = Ti.UI.createButton({
+            left: "50%",
+            width: "25%",
+            title: "View this boat.",
+            height: "80%"
+        });
         var boatLabel = Ti.UI.createLabel({
             text: boatproperties.pop(),
             loa: boatproperties.pop(),
@@ -15,12 +21,13 @@ function Controller() {
             displacement: boatproperties.pop(),
             sailArea: boatproperties.pop(),
             left: 10,
-            height: "100%"
+            color: "#000"
         });
         row.add(boatLabel);
         row.add(image);
+        row.add(viewBT);
         $.boatTable.appendRow(row);
-        boatLabel.addEventListener("click", function() {
+        viewBT.addEventListener("click", function() {
             calcBoat(boatLabel.text, boatLabel.loa, boatLabel.lwl, boatLabel.beam, boatLabel.displacement, boatLabel.sailArea);
             textFields[0].value = boatLabel.text;
             textFields[1].value = boatLabel.loa;

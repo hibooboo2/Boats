@@ -42,22 +42,21 @@ $.add.addEventListener('click', function(e) {
     $.tabgroup.setActiveTab(0);
 });
 /*
-This is the listener that allows you to edit a boat. Upon editing it you are switched to
-the boat stats viewing screen.
-*/
+ This is the listener that allows you to edit a boat. Upon editing it you are switched to
+ the boat stats viewing screen.
+ */
 /*
-$.edit.addEventListener('click', function(e) {
-if (validateData()) {
-var textValues = [];
-function getvalues(element, index, array) {
-textValues.push(element.value);
-};
-textFields.forEach(getvalues);
-updateBoatInDB(textValues);
-$.tabgroup.setActiveTab(1);
-}
-});*/
-
+ $.edit.addEventListener('click', function(e) {
+ if (validateData()) {
+ var textValues = [];
+ function getvalues(element, index, array) {
+ textValues.push(element.value);
+ };
+ textFields.forEach(getvalues);
+ updateBoatInDB(textValues);
+ $.tabgroup.setActiveTab(1);
+ }
+ });*/
 
 /*
  This is the listener for the exit button. It exits the app in android, displays an alert
@@ -99,6 +98,13 @@ function saveBoatbutton(boatproperties) {
     // width : "20%",
     // title : "Delete this boat."
     // });
+
+    var viewBT = Ti.UI.createButton({
+        left : "50%",
+        width : "25%",
+        title : "View this boat.",
+        height : "80%"
+    });
     var boatLabel = Ti.UI.createLabel({
         text : boatproperties.pop(),
         loa : boatproperties.pop(),
@@ -107,14 +113,14 @@ function saveBoatbutton(boatproperties) {
         displacement : boatproperties.pop(),
         sailArea : boatproperties.pop(),
         left : 10,
-        height : "100%"
+        color : "#000"
     });
     row.add(boatLabel);
     row.add(image);
-    //row.add(deleteBT);
+    row.add(viewBT);
     $.boatTable.appendRow(row);
     // Listen for click events on the label.
-    boatLabel.addEventListener('click', function() {
+    viewBT.addEventListener('click', function() {
         calcBoat(boatLabel.text, boatLabel.loa, boatLabel.lwl, boatLabel.beam, boatLabel.displacement, boatLabel.sailArea);
         textFields[0].value = boatLabel.text;
         textFields[1].value = boatLabel.loa;
