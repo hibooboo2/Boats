@@ -57,9 +57,6 @@
 	bottom:"0",
 	bubbleParent : true
 }
-"#boatName" : {
-	clearOnEdit : false
-}
 "#add" : {
 	image : "Button-Add-icon.png"
 }

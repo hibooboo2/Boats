@@ -2,16 +2,13 @@ function Controller() {
     function saveBoatbutton(boatproperties) {
         boatproperties.reverse();
         var row = Ti.UI.createTableViewRow({
-            height: "100px"
-        });
-        var image = Ti.UI.createImageView({
-            url: "KS_nav_ui.png"
+            height: "100px",
+            backgroundColor: "White"
         });
         var viewBT = Ti.UI.createButton({
-            left: "50%",
+            right: 10,
             width: "25%",
-            title: "View this boat.",
-            height: "80%"
+            title: "View this boat."
         });
         var boatLabel = Ti.UI.createLabel({
             text: boatproperties.pop(),
@@ -24,17 +21,10 @@ function Controller() {
             color: "#000"
         });
         row.add(boatLabel);
-        row.add(image);
         row.add(viewBT);
         $.boatTable.appendRow(row);
         viewBT.addEventListener("click", function() {
             calcBoat(boatLabel.text, boatLabel.loa, boatLabel.lwl, boatLabel.beam, boatLabel.displacement, boatLabel.sailArea);
-            textFields[0].value = boatLabel.text;
-            textFields[1].value = boatLabel.loa;
-            textFields[2].value = boatLabel.lwl;
-            textFields[3].value = boatLabel.beam;
-            textFields[4].value = boatLabel.displacement;
-            textFields[5].value = boatLabel.sailArea;
             $.tabgroup.setActiveTab(2);
         });
     }
@@ -140,7 +130,7 @@ function Controller() {
     });
     $.__views.addboat.add($.__views.tab1scroll);
     $.__views.boatName = Ti.UI.createTextField({
-        clearOnEdit: false,
+        clearOnEdit: true,
         editable: true,
         width: "100%",
         height: "14%",
@@ -450,7 +440,6 @@ function Controller() {
     $.__views.tabgroup && $.addTopLevelView($.__views.tabgroup);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    $.tabgroup.open();
     var textFields = [ $.boatName, $.loa, $.lwl, $.beam, $.displacement, $.sailArea ];
     var windows = [ $.addboat, $.dbwindow, $.savedboats ];
     makeBoatButtonsFromDB();
@@ -465,6 +454,9 @@ function Controller() {
             textFields.forEach(getvalues);
             saveBoatbutton(test);
             $.tabgroup.setActiveTab(1);
+            textFields.forEach(function(element) {
+                element.value = "";
+            });
         }
     });
     $.cancel.addEventListener("click", function() {
@@ -482,6 +474,7 @@ function Controller() {
     $.home.addEventListener("click", function() {
         $.tabgroup.setActiveTab(1);
     });
+    $.tabgroup.open();
     _.extend($, exports);
 }
 

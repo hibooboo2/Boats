@@ -1,5 +1,3 @@
-$.tabgroup.open();
-
 var textFields = [$.boatName, $.loa, $.lwl, $.beam, $.displacement, $.sailArea];
 var windows = [$.addboat, $.dbwindow, $.savedboats];
 makeBoatButtonsFromDB();
@@ -20,6 +18,9 @@ $.save.addEventListener('click', function(e) {
         textFields.forEach(getvalues);
         saveBoatbutton(test);
         $.tabgroup.setActiveTab(1);
+        textFields.forEach(function(element, index, array) {
+            element.value = "";
+        });
     }
 });
 
@@ -41,23 +42,6 @@ $.add.addEventListener('click', function(e) {
     });
     $.tabgroup.setActiveTab(0);
 });
-/*
- This is the listener that allows you to edit a boat. Upon editing it you are switched to
- the boat stats viewing screen.
- */
-/*
- $.edit.addEventListener('click', function(e) {
- if (validateData()) {
- var textValues = [];
- function getvalues(element, index, array) {
- textValues.push(element.value);
- };
- textFields.forEach(getvalues);
- updateBoatInDB(textValues);
- $.tabgroup.setActiveTab(1);
- }
- });*/
-
 /*
  This is the listener for the exit button. It exits the app in android, displays an alert
  in the other oses.
@@ -87,23 +71,13 @@ function saveBoatbutton(boatproperties) {
     // Create a Button.
     boatproperties.reverse();
     var row = Ti.UI.createTableViewRow({
-        height : "100px"
+        height : "100px",
+        backgroundColor : "White"
     });
-    var image = Ti.UI.createImageView({
-        url : 'KS_nav_ui.png'
-    });
-    // var deleteBT = Ti.UI.createButton({
-    // right : 10,
-    // image : 'delete.png',
-    // width : "20%",
-    // title : "Delete this boat."
-    // });
-
-    var viewBT = Ti.UI.createButton({
-        left : "50%",
+   var viewBT = Ti.UI.createButton({
+        right : 10,
         width : "25%",
-        title : "View this boat.",
-        height : "80%"
+        title : "View this boat."
     });
     var boatLabel = Ti.UI.createLabel({
         text : boatproperties.pop(),
@@ -116,18 +90,13 @@ function saveBoatbutton(boatproperties) {
         color : "#000"
     });
     row.add(boatLabel);
-    row.add(image);
+    // row.add(image);
     row.add(viewBT);
     $.boatTable.appendRow(row);
     // Listen for click events on the label.
     viewBT.addEventListener('click', function() {
+        // highlight();
         calcBoat(boatLabel.text, boatLabel.loa, boatLabel.lwl, boatLabel.beam, boatLabel.displacement, boatLabel.sailArea);
-        textFields[0].value = boatLabel.text;
-        textFields[1].value = boatLabel.loa;
-        textFields[2].value = boatLabel.lwl;
-        textFields[3].value = boatLabel.beam;
-        textFields[4].value = boatLabel.displacement;
-        textFields[5].value = boatLabel.sailArea;
         $.tabgroup.setActiveTab(2);
     });
 }
@@ -205,32 +174,6 @@ function addBoatToDB() {
     }
 }
 
-function updateBoatInDB(values) {
-    if (Ti.Platform.osname.toString().toLowerCase().localeCompare("mobileweb") != 0) {
-        var boatsdb = Ti.Database.open('boatsDB');
-        boatsdb.execute('UPDATE theBoats SET boatName=?,loa=?,lwl=?,beam=?,displacement=?,sailArea=? WHERE boatName=? ', values[0], values[1], values[2], values[3], values[4], values[5], values[0]);
-        boatsdb.close();
-        alert(values[0] + " has been updated.");
-    }
-}
-
-function deleteBoatInDB(boatName) {
-    if (Ti.Platform.osname.toString().toLowerCase().localeCompare("mobileweb") != 0) {
-        var boatsdb = Ti.Database.open('boatsDB');
-        boatsdb.execute('DELETE FROM theBoats WHERE boatName=?', boatName);
-        boatsdb.close();
-        updateBoatViewer();
-        alert(boatName + " deleted!");
-    } else if (Ti.Platform.osname.toString().toLowerCase().localeCompare("mobileweb") == 0) {
-        $.boatTable.setData(null);
-    }
-}
-
-function updateBoatViewer() {
-    $.boatTable.removeAllChildren();
-    makeBoatButtonsFromDB();
-}
-
 /*
  @method validateData
  This method validates that the data in the textfields is correct, if
@@ -277,18 +220,4 @@ function swiped(element, index, array) {
     });
 };
 
-function showWin(winNumber) {
-    if (winNumber == 0) {
-        windows[1].hide();
-        windows[2].hide();
-        windows[0].show();
-    } else if (winNumber == 1) {
-        windows[2].hide();
-        windows[0].hide();
-        windows[1].show();
-    } else if (winNumber == 2) {
-        windows[1].hide();
-        windows[0].hide();
-        windows[2].show();
-    }
-};
+$.tabgroup.open(); 

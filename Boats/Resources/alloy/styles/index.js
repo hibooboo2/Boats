@@ -92,20 +92,13 @@ module.exports = [ {
 }, {
     isId: true,
     priority: 100000.001,
-    key: "boatName",
-    style: {
-        clearOnEdit: false
-    }
-}, {
-    isId: true,
-    priority: 100000.0011,
     key: "add",
     style: {
         image: "Button-Add-icon.png"
     }
 }, {
     isId: true,
-    priority: 100000.0012,
+    priority: 100000.0011,
     key: "boatTable",
     style: {
         minRowHeight: "50px",
